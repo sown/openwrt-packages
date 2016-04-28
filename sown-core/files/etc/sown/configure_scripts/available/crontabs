@@ -1,0 +1,7 @@
+#!/bin/ash
+. /etc/sown/functions.sh
+. /etc/sown/constants.sh
+
+if update_config sown_openwrt_core 0.1.271 crontabs ; then
+	update_crontabs
+fi

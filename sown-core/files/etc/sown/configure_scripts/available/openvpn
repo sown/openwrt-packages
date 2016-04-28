@@ -1,0 +1,15 @@
+#!/bin/ash
+
+. /etc/sown/functions.sh
+
+if update_config sown_openwrt_tunnel 0.1.261 openvpn ; then
+	ENABLED=`uci_get_bool openvpn sown_tunnel enable 'false'`
+	
+	if $ENABLED ; then
+		enable_crontab tunnel && update_crontabs
+	else
+		disable_crontab tunnel && update_crontabs
+	fi
+	
+	/etc/init.d/openvpn restart
+fi

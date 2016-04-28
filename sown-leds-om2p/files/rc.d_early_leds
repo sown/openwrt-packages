@@ -1,0 +1,2 @@
+#! /bin/ash
+echo timer > /sys/class/leds/om2p\:blue\:power/trigger         

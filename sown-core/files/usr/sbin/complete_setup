@@ -1,0 +1,66 @@
+#! /bin/ash
+
+. /etc/sown/functions.sh
+
+# Now wait for the tunnel to be up (or 30 seconds)
+i=0
+while (! (ping -w 1 -c 1 10.13.0.252 2>&1 >/dev/null) && ( test $i -lt 30 ) ) >> /dev/null; do
+	i=`expr $i + 1`
+	echo -n "."
+done
+if test $i -lt 30; then
+	firstrun_url=`uci get sown_core.@node[0].firstrun_url`
+
+	interface=`ip r | grep default | awk '{print $5;}'`
+	mac=`ip link show ${interface} | grep 'link/ether' | awk '{print $2;}'`
+	nonce=`get_client_nonce`
+
+    local lock_file=/tmp/update_sown_config.lock
+
+    if [ -e "$lock_file" ]; then
+	    echo "Update already in progress" >&2
+    	exit 0
+    fi
+
+    touch "$lock_file"
+
+    export IN_COMPLETE_SETUP=1
+
+	for file in $(ls /etc/sown/configure_scripts/enabled/* 2>/dev/null); do
+		"$file"
+	
+		if [ $? -ne 0 ] ; then
+			echo "Error running configure script '$file'." >&2
+			rm "$lock_file"
+			exit 1
+		fi
+
+        # Now check that the tunnel is still up (or 30 seconds)
+        i=0
+        while (! (ping -w 1 -c 1 10.13.0.252 2>&1 >/dev/null) && ( test $i -lt 30 ) ) >> /dev/null; do
+	        i=`expr $i + 1`
+	        echo -n "."
+        done
+
+        if test $i -ge 30; then
+            echo "Lost tunnel to SOWN after configure script '$file'." >&2
+            rm "$lock_file"
+        fi
+
+	done
+
+    rm "$lock_file"
+
+	TMPFILE=`download_url ${firstrun_url} "mac=${mac}&nonce=${nonce}&complete=1" "--cacert /etc/ssl/certs/startcom.pem"`
+else
+	# Failed, try again later
+	uci set crontabs.setup.enabled='true'
+	if [ $? -ne 0 ]; then
+		group_name=`uci add crontabs feature`
+		uci rename crontabs.${group_name}='complete_setup'
+		uci set crontabs.complete_setup.command='*/5 * * * * /usr/sbin/complete_setup'
+		uci set crontabs.complete_setup.enabled='true'
+		uci commit
+		update_crontabs
+	fi
+fi

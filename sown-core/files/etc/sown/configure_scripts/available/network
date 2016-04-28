@@ -1,0 +1,6 @@
+#!/bin/ash
+. /etc/sown/functions.sh
+
+if update_config sown_openwrt_core 0.1.271 network ; then
+	/etc/init.d/network restart
+fi

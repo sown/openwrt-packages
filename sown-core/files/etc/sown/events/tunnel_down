@@ -1,0 +1,12 @@
+#!/bin/ash
+
+echo "TODO: Kill radvd ... it can't route anymore"
+
+echo "Stopping wireless"
+/sbin/wifi down
+
+for file in `ls -1 /etc/sown/events/tunnel_down.d`; do
+	/etc/sown/events/tunnel_down.d/$file
+done
+
+exit 0

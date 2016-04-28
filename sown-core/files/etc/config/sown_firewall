@@ -1,0 +1,11 @@
+config 'feature' 'port_filter'
+	option 'extra_ports' '1234 12345'
+	option 'enabled' 'true'
+
+# TODO consider disabling by default
+config 'feature' 'layer7'
+	option 'enabled' 'true'
+
+# TODO consider disabling by default
+config 'feature' 'IP_blacklist'
+	option 'enabled' 'true'

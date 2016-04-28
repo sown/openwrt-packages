@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# chains should be single executable files with a number as the initial part
+# of the file name
+#
+# chains will be loaded in the order of the filename numbers
+#
+# the default policy of a built-in chain should be 'accept'
+# if you need a default-deny, create a new non-built-in chain and jump all
+# traffic to it. 'accept' traffic you like back from your new chain, to the
+# built-in chain, and reject anything that reaches the bottom of your new chain
+
+

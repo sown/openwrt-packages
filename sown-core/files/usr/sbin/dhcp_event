@@ -1,0 +1,41 @@
+#!/bin/ash
+
+. /etc/sown/constants.sh
+. /etc/sown/functions.sh
+
+# get client ip and mac
+if [ $# -lt 3 ]; then
+	echo "Usage: $0 <action> <mac-addres> <ip-address> [hostname [internal]] "
+	echo
+	echo "	<action> = add, old or del"
+	echo "	[internal]> = true or false"
+	return 1
+fi
+
+local action="$1"
+local client_mac="$2"
+local client_ip="$3"
+local client_hostname="$4"
+
+mkdir -p /tmp/dhcp-event/
+
+/usr/bin/logger "dhcp-event $action $client_mac $client_ip $client_hostname"
+
+if [ "$action" = "del" ]; then
+	/usr/sbin/iptables -D one_ip_per_mac -m mac --mac-source $client_mac -s $client_ip -j ACCEPT
+	/usr/sbin/hostapd_cli -p /tmp/run/hostapd-phy0/ -iwlan0 deauthenticate $client_mac
+	rm /tmp/dhcp-event/$client_mac
+else
+	if [ -e /tmp/dhcp-event/$client_mac ]; then
+		if [ "`cat /tmp/dhcp-event/$client_mac`" != "$client_ip" ]; then
+			/usr/bin/logger "WARN IRC, $client_mac assigned dhcp:$client_ip was previously `cat /tmp/dhcp-event/$client_mac`";
+		fi
+	fi
+	
+	/usr/sbin/iptables -D one_ip_per_mac -m mac --mac-source $client_mac -s $client_ip -j ACCEPT
+        /usr/sbin/iptables -I one_ip_per_mac 1 -m mac --mac-source $client_mac -s $client_ip -j ACCEPT
+        echo $client_ip > /tmp/dhcp-event/$client_mac
+fi
+
+
+return 0

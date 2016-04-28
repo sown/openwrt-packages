@@ -1,0 +1,42 @@
+#!/bin/sh /etc/rc.common
+
+START=11
+
+start() {
+	. /etc/sown/constants.sh
+
+	# Wait X centiseconds before writing back to the flash.
+	echo "1500" > /proc/sys/vm/dirty_writeback_centisecs 
+
+	mkdir -p /tmp/sown/crontabs/current
+	mkdir -p $ROOT_CRONTAB_PATH
+	mkdir -p /tmp/sown/reachable
+	mkdir -p /tmp/sown/hops
+
+	# Assume nothing is reachable at boot
+	for server in $SOWN_CORE_SERVERS; do
+		local status_file=`eval "echo \\\$"${server}"_REACHABLE_FILE"`
+		echo 'n' > "$status_file"
+	done
+
+	echo "nameserver $IP_VPN_SOWN_v4" > /tmp/resolv.conf.sown
+	echo 'search sown.org.uk' >> /tmp/resolv.conf.sown
+
+	rm -f /tmp/resolv.conf
+	ln -sf resolv.conf.auto /tmp/resolv.conf
+
+	[ ! -L /etc/crontabs ] && {
+		rm -rf /etc/crontabs
+		ln -s $ROOT_CRONTAB_PATH /etc/crontabs
+	}
+	touch /etc/crontabs/root
+	
+	. /etc/sown/functions.sh
+
+	update_crontabs
+}
+
+
+stop() {
+	[ -d /etc/sown/crontabs/current/ ] && rm /etc/sown/crontabs/current/*
+}

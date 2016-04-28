@@ -1,0 +1,44 @@
+#!/bin/ash
+
+OPKG_LOCK="/var/lock/opkg.lock"
+
+# Check whether opkg is wedged - faulty ecs web servers cause the 
+# repo to be left locked
+if [ -e $OPKG_LOCK ]; then
+	if [ $((`date +%s` - `stat -c "%Y" $OPKG_LOCK`)) -ge 3600 ]; then
+		rm $OPKG_LOCK
+	fi
+fi
+
+# We want to do this periodically
+/bin/opkg update
+
+local lock_file=/tmp/update_sown_config.lock
+
+if [ -e "$lock_file" ]; then
+	echo "Update already in progress" >&2
+	exit 0
+fi
+
+touch "$lock_file"
+
+/etc/sown/configure_scripts/available/credentials
+
+if [ $? -ne 0 ] ; then
+	echo "Updating credentials failed :( Cannot update config" >&2
+	rm "$lock_file"
+	exit 1
+fi
+
+for file in $(ls /etc/sown/configure_scripts/enabled/* 2>/dev/null); do
+	"$file"
+	
+	if [ $? -ne 0 ] ; then
+		echo "Error running configure script '$file'." >&2
+		rm "$lock_file"
+		exit 1
+	fi
+done
+
+sync
+rm "$lock_file"

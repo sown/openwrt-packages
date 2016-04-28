@@ -1,0 +1,15 @@
+#!/bin/sh
+
+. /etc/sown/functions.sh
+
+local hostapd_count=`ls /var/run/hostapd-*.conf | wc -l`
+local running_hostapd_count=`/usr/bin/pgrep hostapd | wc -l`
+
+echo "$running_hostapd_count / $hostapd_count instances of hostapd are running"
+
+if [ "$running_hostapd_count" -eq "$hostapd_count" ]; then
+        return 0;
+else     
+        return 1;
+fi
+

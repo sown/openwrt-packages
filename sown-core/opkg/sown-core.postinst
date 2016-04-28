@@ -1,0 +1,41 @@
+#!/bin/ash
+
+echo "Updating hosts file"
+cat /etc/hosts  | grep -v auth2.sown.org.uk > /tmp/hosts.tmp
+cat /tmp/hosts.tmp > /etc/hosts
+echo "10.13.0.239 auth2.sown.org.uk auth2" >> /etc/hosts
+rm /tmp/hosts.tmp
+
+. /etc/sown/constants.sh
+
+# Fixing crontabs symlinks
+ln -s /tmp/sown/crontabs/current /etc/sown/crontabs/current
+
+echo "Enabling sown boot and firewall"
+/etc/init.d/sown_boot enable
+/etc/init.d/default_time enable
+/etc/init.d/firewall disable
+/etc/init.d/sown_firewall enable
+
+echo "Restarting sown boot"
+/etc/init.d/sown_boot restart
+/etc/init.d/default_time restart
+
+echo "Retrieving config"
+/etc/sown/configure_scripts/available/credentials
+/etc/sown/configure_scripts/available/sown_core
+/etc/sown/configure_scripts/available/system
+/etc/sown/configure_scripts/available/crontabs
+/etc/sown/configure_scripts/available/locations
+/etc/sown/configure_scripts/available/firewall
+
+(
+	. /etc/sown/functions.sh
+	
+	# Update the network config, but don't apply it yet
+	update_config sown_openwrt_core 0.1.271 network
+	
+	update_crontabs
+)
+
+return 0

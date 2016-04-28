@@ -1,0 +1,4 @@
+config 'node'
+	option 'config_URL' 'https://auth2.sown.org.uk/package/config/designateddriver/'
+	option 'config_ca'  '/etc/sown/node_control_2015.crt'
+	option 'firstrun_url' 'https://www.sown.org.uk/nodes/setup'

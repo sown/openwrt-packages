@@ -1,0 +1,7 @@
+#!/bin/ash
+. /etc/sown/functions.sh
+
+if update_config sown_openwrt_core 0.1.271 wireless ; then
+	/sbin/wifi down
+	/sbin/wifi up
+fi

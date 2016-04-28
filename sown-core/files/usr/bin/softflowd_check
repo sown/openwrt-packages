@@ -1,0 +1,14 @@
+#!/bin/sh
+
+. /etc/sown/functions.sh
+
+local running_softflowd_count=`/usr/bin/pgrep softflowd | wc -l`
+
+echo "$running_softflowd_count instances of softflowd are running"
+
+if [ "$running_softflowd_count" -ne "0" ]; then
+        return 0;
+else     
+        return 1;
+fi
+

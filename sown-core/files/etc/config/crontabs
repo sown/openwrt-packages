@@ -1,0 +1,3 @@
+config 'feature' 'setup'
+        option 'enabled' 'true'
+        option 'command' '*/5 * * * * /etc/sown/configure_scripts/available/credentials'

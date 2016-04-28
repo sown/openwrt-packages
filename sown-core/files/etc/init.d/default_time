@@ -1,0 +1,43 @@
+#!/bin/sh /etc/rc.common
+
+START=05
+
+start() {
+	. /etc/sown/functions.sh
+	
+	local crt_files="/etc/sown/ca.crt /etc/sown/client.crt"
+	local fallback_date='201107010000'
+	local fallback_ts=`date -d $fallback_date +%s`
+
+	local new_ts=0
+	for crt in $crt_files; do
+		
+		if [ ! -f $crt ]; then
+			break
+		fi
+		
+		local crt_date=`grep "Not Before:" "$crt" | head -n 1 | sed "s/^[ \t]\+Not Before: \(.\+\)$/\1/"`
+		
+		if [ -n "$crt_date" ]; then
+			crt_ts=`date -d "$crt_date" -D "%b %d %H:%M:%S %Y %Z" +%s`
+		else
+			# If there was no date in the file, use the file modified time
+			crt_ts=`get_file_mtime "$crt"`
+		fi
+		
+		[ $crt_ts -gt $new_ts ] && new_ts="$crt_ts"
+	done
+	
+	if [ $new_ts -lt $fallback_ts ]; then
+		new_ts="$fallback_ts"
+	fi
+
+	local cur_ts=`date +%s`
+	if [ $new_ts -gt $cur_ts ]; then
+		OLD_DATE=`date`
+		NEW_DATE=`date -D "%s" -s "$new_ts"`
+
+		echo "Time was $OLD_DATE."
+		echo "Time has been set to $NEW_DATE."
+	fi
+}

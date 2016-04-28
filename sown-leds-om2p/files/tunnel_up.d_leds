@@ -1,0 +1,5 @@
+#! /bin/ash
+echo 0 > /sys/class/leds/om2p\:red\:wifi/brightness
+echo timer > /sys/class/leds/om2p\:yellow\:wifi/trigger
+echo none > /sys/class/leds/om2p\:blue\:wan/trigger
+echo 255 > /sys/class/leds/om2p\:blue\:wan/brightness

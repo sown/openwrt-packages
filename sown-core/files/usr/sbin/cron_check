@@ -1,0 +1,19 @@
+#!/bin/ash
+
+. /etc/sown/functions.sh
+
+local DIR=/etc/crontabs
+local index="$DIR/cron.update"
+
+local out=''
+if [ -e "$index" ]; then
+	for f in `cat $index`
+	do
+		formatted=`awk "/^[^#]/ { printf \"<FS> $f : %s\", \\\$0 }" $DIR/$f`
+		out="$out $formatted"
+	done
+fi
+
+out=$(echo "$out" | sed -f /usr/share/sed/urlencode)
+
+download_package_uri sown_openwrt_monitoring 0.1.225 cronjobs shell "jobs=$out"

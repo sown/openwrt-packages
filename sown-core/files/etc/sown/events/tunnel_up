@@ -1,0 +1,14 @@
+#!/bin/ash
+
+# openvpn hasn't update the routes yet - sleep for a bit        
+( sleep 30 ; /etc/sown/events/tunnel_up_delayed ) &
+
+# take the installer tunnel down if its up
+kill -9 `/bin/ps w | /bin/grep "/etc/sown/installer/openvpn.conf" | /bin/grep config  | /usr/bin/awk '{print $1}'`
+
+for file in `ls -1 /etc/sown/events/tunnel_up.d`; do
+	/etc/sown/events/tunnel_up.d/$file
+done
+
+exit 0;
+

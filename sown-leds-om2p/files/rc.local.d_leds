@@ -1,0 +1,7 @@
+#! /bin/ash
+
+echo none > /sys/class/leds/om2p\:blue\:power/trigger            
+echo 255 > /sys/class/leds/om2p\:blue\:power/brightness
+echo netdev > /sys/class/leds/om2p\:blue\:lan/trigger            
+echo eth0 > /sys/class/leds/om2p\:blue\:lan/device_name
+echo "link rx tx" > /sys/class/leds/om2p\:blue\:lan/mode

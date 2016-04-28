@@ -1,0 +1,96 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2007-2011 OpenWrt.org
+
+. /etc/sown/constants.sh
+. /etc/sown/functions.sh
+
+START=50
+
+flush_all() {
+	# Flush the current tables
+	for t in filter nat mangle raw; do
+		/usr/sbin/iptables -t $t -F
+		/usr/sbin/iptables -t $t -X
+			
+		if [ "$t" != 'nat' ]; then
+			ip6tables -t $t -F
+			ip6tables -t $t -X
+		fi
+	done
+
+	# allow inbound traffic
+	/usr/sbin/iptables -A FORWARD -i eth0 -j ACCEPT
+
+	/usr/sbin/iptables -F port_filter 2> /dev/null
+	/usr/sbin/iptables -X port_filter 2> /dev/null
+	
+	# disable the host blacklist
+        echo > /tmp/sown-banned-hosts   
+}
+
+host_blacklist() {
+	echo "Loading host blacklist"
+	# Create the sown-banned-hosts file and restart dnsmasq
+        (for HOST in `uci get sown_firewall.Host_blacklist.list`; do
+               	echo "10.13.0.248 $HOST";
+        done) > /tmp/sown-banned-hosts
+}
+
+ip_blacklist() {
+	echo "Loading ip blacklist"
+	for IP in `uci get sown_firewall.IP_blacklist.list`; do
+		/usr/sbin/iptables -A FORWARD -d $IP -j REJECT;
+	done;
+
+}
+
+port_filter() {
+	echo "Loading port filter"
+
+	/usr/sbin/iptables -N port_filter
+	/usr/sbin/iptables -A FORWARD -j port_filter
+
+	/usr/sbin/iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+	
+	for PORT in `uci get sown_firewall.port_filter.list`; do
+		/usr/sbin/iptables -A port_filter -p tcp --dport $PORT -j ACCEPT;
+		/usr/sbin/iptables -A port_filter -p udp --dport $PORT -j ACCEPT;
+	done
+	
+	/usr/sbin/iptables -A port_filter -j REJECT
+}
+
+
+start() {
+	local IP_BLACKLIST="$(uci_get_bool sown_firewall IP_blacklist enabled 'false')"
+	local HOST_BLACKLIST="$(uci_get_bool sown_firewall Host_blacklist enabled 'false')"
+	local LAYER_7="$(uci_get_bool sown_firewall layer7 enabled 'false')"
+	local PORT_FILTERING="$(uci_get_bool sown_firewall port_filter enabled 'false'
+)"
+
+	flush_all;
+
+	if [ $IP_BLACKLIST = "true" ]; then
+		ip_blacklist;
+	fi
+
+        if [ $HOST_BLACKLIST = "true" ]; then
+		host_blacklist;
+	fi        
+
+        if [ $LAYER_7 = "true" ]; then
+        	echo "Layer7 not yet supported";
+	fi                 
+                                                 
+	if [ $PORT_FILTERING = "true" ]; then
+		port_filter;
+	fi
+
+        include /etc/sown/firewall/chains  
+	
+	/etc/init.d/dnsmasq restart
+}
+
+stop() {
+	flush_all;
+}

@@ -1,0 +1,6 @@
+#!/bin/ash
+. /etc/sown/functions.sh
+
+if update_config sown_openwrt_core 0.1.271 dhcp ; then
+	/etc/init.d/dnsmasq restart
+fi

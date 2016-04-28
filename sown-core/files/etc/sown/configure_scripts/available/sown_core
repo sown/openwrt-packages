@@ -1,0 +1,6 @@
+#!/bin/ash
+. /etc/sown/functions.sh
+
+update_config sown_openwrt_core 0.1.271 sown_core
+
+exit 0

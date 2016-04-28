@@ -1,0 +1,6 @@
+#! /bin/ash
+echo none > /sys/class/leds/om2p\:yellow\:wifi/trigger
+echo 0 > /sys/class/leds/om2p\:yellow\:wifi/brightness
+echo netdev > /sys/class/leds/om2p\:green\:wifi/trigger
+echo wlan0 > /sys/class/leds/om2p\:green\:wifi/device_name
+echo "link rx tx" > /sys/class/leds/om2p\:green\:wifi/mode

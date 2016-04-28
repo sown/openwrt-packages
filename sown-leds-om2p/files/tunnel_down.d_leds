@@ -1,0 +1,8 @@
+#! /bin/sh
+
+echo none > /sys/class/leds/om2p\:blue\:wan/trigger     
+echo 0 > /sys/class/leds/om2p\:blue\:wan/brightness
+
+echo none > /sys/class/leds/om2p\:green\:wifi/trigger
+echo 0 > /sys/class/leds/om2p\:green\:wifi/brightness
+echo 255 > /sys/class/leds/om2p\:red\:wifi/brightness
