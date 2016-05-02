@@ -14,7 +14,9 @@ if [ "`uci get locations.sown_home.auth_type`" = "tunnel" ]; then
 		ping -c 4 $SERVER && REACHABLE="yes";
 	done
 
-	ping -c 4 10.13.0.239 && TUNNEL_OK="yes";
+	TUNNEL_REMOTE_PING_TARGET=`uci get openvpn.sown_tunnel.remote_ping_target`
+
+	ping -c 4 ${TUNNEL_REMOTE_PING_TARGET} && TUNNEL_OK="yes";
 
 	# Check if we should change the tunnel config?
 	if [ "$TUNNEL_OK" = "no" ]; then

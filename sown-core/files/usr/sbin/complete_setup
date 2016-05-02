@@ -2,9 +2,11 @@
 
 . /etc/sown/functions.sh
 
+TUNNEL_REMOTE_PING_TARGET=`uci get openvpn.sown_tunnel.remote_ping_target`
+
 # Now wait for the tunnel to be up (or 30 seconds)
 i=0
-while (! (ping -w 1 -c 1 10.13.0.252 2>&1 >/dev/null) && ( test $i -lt 30 ) ) >> /dev/null; do
+while (! (ping -w 1 -c 1 ${TUNNEL_REMOTE_PING_TARGET} 2>&1 >/dev/null) && ( test $i -lt 30 ) ) >> /dev/null; do
 	i=`expr $i + 1`
 	echo -n "."
 done
@@ -35,9 +37,12 @@ if test $i -lt 30; then
 			exit 1
 		fi
 
+		# This *may* change after config pull
+		TUNNEL_REMOTE_PING_TARGET=`uci get openvpn.sown_tunnel.remote_ping_target`
+
         # Now check that the tunnel is still up (or 30 seconds)
         i=0
-        while (! (ping -w 1 -c 1 10.13.0.252 2>&1 >/dev/null) && ( test $i -lt 30 ) ) >> /dev/null; do
+        while (! (ping -w 1 -c 1 ${TUNNEL_REMOTE_PING_TARGET} 2>&1 >/dev/null) && ( test $i -lt 30 ) ) >> /dev/null; do
 	        i=`expr $i + 1`
 	        echo -n "."
         done

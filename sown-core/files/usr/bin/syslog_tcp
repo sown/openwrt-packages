@@ -1,7 +1,7 @@
 #!/bin/sh
 
-SYSLOG_SERVER="10.13.0.239"
-SYSLOG_PORT="5140"
+SYSLOG_SERVER=`uci get sown_core.@node[0].syslog_server`
+SYSLOG_PORT=`uci get sown_core.@node[0].syslog_port`
 
 if [ -e /tmp/syslog_tcp.pid ]; then
 	PARENT_PID=`cat /tmp/syslog_tcp.pid`

@@ -3,8 +3,10 @@
 . /etc/sown/constants.sh
 . /etc/sown/functions.sh
 
+SYSLOG_PORT=`uci get sown_core.@node[0].syslog_port`
+
 # Make sure syslog_tcp connection still open
-if [ `/bin/netstat -t | /bin/grep ESTABLISHED | /usr/bin/awk 'BEGIN{FS="[\t :]+"}{print $7}' | /bin/grep 5140 | /usr/bin/wc -l` -eq 0 ]; then
+if [ `/bin/netstat -t | /bin/grep ESTABLISHED | /usr/bin/awk 'BEGIN{FS="[\t :]+"}{print $7}' | /bin/grep ${SYSLOG_PORT} | /usr/bin/wc -l` -eq 0 ]; then
         # restart syslog_tcp
         echo "maintain_syslog: Restarting syslog_tcp with -hup" | logger
         /usr/bin/syslog_tcp -hup &

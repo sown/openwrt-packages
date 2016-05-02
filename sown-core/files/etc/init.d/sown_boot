@@ -13,12 +13,6 @@ start() {
 	mkdir -p /tmp/sown/reachable
 	mkdir -p /tmp/sown/hops
 
-	# Assume nothing is reachable at boot
-	for server in $SOWN_CORE_SERVERS; do
-		local status_file=`eval "echo \\\$"${server}"_REACHABLE_FILE"`
-		echo 'n' > "$status_file"
-	done
-
 	echo "nameserver $IP_VPN_SOWN_v4" > /tmp/resolv.conf.sown
 	echo 'search sown.org.uk' >> /tmp/resolv.conf.sown
 
