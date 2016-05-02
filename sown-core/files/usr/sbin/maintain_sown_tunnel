@@ -5,7 +5,7 @@
 
 # Should we start the tunnel
 if [ "`uci get locations.sown_home.auth_type`" = "tunnel" ]; then
-	# Is the openvpn endpoint reachaable?
+	# Is the openvpn endpoint reachable?
 	REACHABLE="no";
 	TUNNEL_OK="no";
 	ENDPOINTS=`uci get openvpn.sown_tunnel.remote | tr ' ' '\n' | grep "\." | sed "s/'//g"`
@@ -18,6 +18,8 @@ if [ "`uci get locations.sown_home.auth_type`" = "tunnel" ]; then
 
 	# Check if we should change the tunnel config?
 	if [ "$TUNNEL_OK" = "no" ]; then
+        /etc/sown/events/tunnel_down # Tunnel isn't valid, run down events
+
 		# log that we ran while the tunnel wasn't working
 		/bin/date >>  $TUNNEL_STARTUP_LOG
 		
