@@ -246,9 +246,9 @@ header = \"If-None-Match: '$hash_str'\""
 	SERVER_DATE=`date '+%Y-%m-%d %H:%M:%S' -D '%a, %d %b %Y %T' -d "$SERVER_DATE"`
 	local SERVER_ETAG=`grep '^ETag:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
 
-    if [ "${SERVER_ETAG}" == "${hash_str}" ]; then       
-        return 1                                           
-    fi	
+	if [ "${hash_str}" != "" ] && [ "${SERVER_ETAG}" == "${hash_str}" ]; then
+		return 1
+	fi
 
 	if [ "$last_modified" != "1970-01-01 00:00:00" ]; then
 		local tmp=`mktemp -t`
