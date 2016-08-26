@@ -71,6 +71,12 @@ if [ "`uci get locations.sown_home.auth_type`" = "tunnel" ]; then
 			echo "maintain_sown_tunnel: Starting tunnel" | logger
 			/etc/init.d/openvpn stop
 			/etc/init.d/openvpn start
+        else
+            # If the tunnel is up, check if the wifi isn't
+            wlan_cfg=`ifconfig | grep -E '^wlan'`
+			if [ "$wlan_cfg" == "" ]; then
+				`uci get openvpn.sown_tunnel.up`
+			fi
 		fi
 	fi
 fi
