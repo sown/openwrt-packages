@@ -9,8 +9,8 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=sown-core
-PKG_VERSION:=0.6
-PKG_RELEASE:=2015
+PKG_VERSION:=0.7
+PKG_RELEASE:=2016
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
