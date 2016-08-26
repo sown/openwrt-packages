@@ -232,7 +232,7 @@ update_config()
 	local extra_curl_options="header = \"If-Modified-Since: $date\""
 	if [ "$hash_str" ]; then
 		extra_curl_options="$extra_curl_options
-header = \"If-None-Match: '$hash_str'\""
+header = \"If-None-Match: \\\"$hash_str\\\"\""
 	fi
 	local FILE
 	FILE=`download_package_uri "$package_name" "$version_number" "uci_config_$config_file" uci_config "$data" "$extra_curl_options"`
