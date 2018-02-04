@@ -64,7 +64,6 @@ define Package/sown-core/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/tunnel_down $(1)/etc/sown/events/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/tunnel_up_delayed $(1)/etc/sown/events/
 	$(INSTALL_DIR) $(1)/etc/sown/events/tunnel-up.d
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/tunnel-up.d/route $(1)/etc/sown/events/tunnel-up.d/
 	$(INSTALL_DIR) $(1)/etc/sown/events/tunnel-down.d
 	$(INSTALL_DIR) $(1)/etc/sown/firewall/chains/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/firewall/chains/* $(1)/etc/sown/firewall/chains/
