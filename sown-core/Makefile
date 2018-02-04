@@ -44,8 +44,6 @@ endef
 define Package/sown-core/install
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/config/* $(1)/etc/config/
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/init.d/* $(1)/etc/init.d/
 	$(INSTALL_DIR) $(1)/etc/sown
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/ca.crt $(1)/etc/sown/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/constants.sh $(1)/etc/sown/
