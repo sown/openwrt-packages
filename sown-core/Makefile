@@ -46,8 +46,6 @@ define Package/sown-core/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/config/* $(1)/etc/config/
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/init.d/* $(1)/etc/init.d/
-	$(INSTALL_DIR) $(1)/etc/rc.local.d
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/rc.local $(1)/etc/rc.local
 	$(INSTALL_DIR) $(1)/etc/sown
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/ca.crt $(1)/etc/sown/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/constants.sh $(1)/etc/sown/
@@ -62,7 +60,12 @@ define Package/sown-core/install
 	$(INSTALL_DIR) $(1)/etc/sown/crontabs/available/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/crontabs/available/* $(1)/etc/sown/crontabs/available/
 	$(INSTALL_DIR) $(1)/etc/sown/events/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/* $(1)/etc/sown/events/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/tunnel_up $(1)/etc/sown/events/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/tunnel_down $(1)/etc/sown/events/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/tunnel_up_delayed $(1)/etc/sown/events/
+	$(INSTALL_DIR) $(1)/etc/sown/events/tunnel-up.d
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/tunnel-up.d/route $(1)/etc/sown/events/tunnel-up.d/
+	$(INSTALL_DIR) $(1)/etc/sown/events/tunnel-down.d
 	$(INSTALL_DIR) $(1)/etc/sown/firewall/chains/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/firewall/chains/* $(1)/etc/sown/firewall/chains/
 	$(INSTALL_DIR) $(1)/etc/ssl/certs
