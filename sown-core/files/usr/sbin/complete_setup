@@ -56,7 +56,7 @@ if test $i -lt 30; then
 
     rm "$lock_file"
 
-	TMPFILE=`download_url ${firstrun_url} "mac=${mac}&nonce=${nonce}&complete=1" "--cacert /etc/ssl/certs/startcom.pem"`
+	TMPFILE=`download_url ${firstrun_url} "mac=${mac}&nonce=${nonce}&complete=1" "--cacert /etc/ssl/certs/DST_ROOT_CA_X3.pem"`
 else
 	# Failed, try again later
 	uci set crontabs.setup.enabled='true'
