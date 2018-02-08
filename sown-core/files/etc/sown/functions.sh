@@ -461,6 +461,8 @@ download_url()
 # [flag]        Any value here will prevent cron from being started
 update_crontabs()
 {
+    local cron_path=`eval "echo \\\$ROOT_CRONTAB_PATH"`
+    mkdir -p $cron_path
 	local cron_file=`eval "echo \\\$ROOT_CRONTAB_FILE"`
 	echo "# DO NOT EDIT THE CRONTAB HERE" > "$cron_file";
 	echo "# It is automatically generated from /etc/sown/configure_scripts/available/crontabs" >> "$cron_file";

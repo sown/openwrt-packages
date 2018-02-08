@@ -34,7 +34,6 @@ if test $i -lt 30; then
 		if [ $? -ne 0 ] ; then
 			echo "Error running configure script '$file'." >&2
 			rm "$lock_file"
-			exit 1
 		fi
 
 		# This *may* change after config pull
