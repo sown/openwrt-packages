@@ -1,7 +1,7 @@
 #!/bin/ash
 
 # IP Addresses
-IP_VPN_SOWN_v4='10.13.0.253'
+IP_VPN_SOWN_v4='10.5.0.253'
 
 # File locations
 

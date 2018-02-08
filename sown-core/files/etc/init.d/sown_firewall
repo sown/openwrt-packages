@@ -32,7 +32,7 @@ host_blacklist() {
 	echo "Loading host blacklist"
 	# Create the sown-banned-hosts file and restart dnsmasq
         (for HOST in `uci get sown_firewall.Host_blacklist.list`; do
-               	echo "10.13.0.248 $HOST";
+               	echo "10.5.0.248 $HOST";
         done) > /tmp/sown-banned-hosts
 }
 

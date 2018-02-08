@@ -3,7 +3,7 @@
 echo "Updating hosts file"
 cat /etc/hosts  | grep -v auth2.sown.org.uk > /tmp/hosts.tmp
 cat /tmp/hosts.tmp > /etc/hosts
-echo "10.13.0.239 auth2.sown.org.uk auth2" >> /etc/hosts
+echo "10.5.0.239 auth2.sown.org.uk auth2" >> /etc/hosts
 rm /tmp/hosts.tmp
 
 . /etc/sown/constants.sh
