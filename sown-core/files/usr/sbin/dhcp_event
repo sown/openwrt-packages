@@ -12,10 +12,10 @@ if [ $# -lt 3 ]; then
 	return 1
 fi
 
-local action="$1"
-local client_mac="$2"
-local client_ip="$3"
-local client_hostname="$4"
+action="$1"
+client_mac="$2"
+client_ip="$3"
+client_hostname="$4"
 
 mkdir -p /tmp/dhcp-event/
 

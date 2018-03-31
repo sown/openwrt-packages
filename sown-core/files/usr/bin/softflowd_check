@@ -2,7 +2,7 @@
 
 . /etc/sown/functions.sh
 
-local running_softflowd_count=`/usr/bin/pgrep softflowd | wc -l`
+running_softflowd_count=`/usr/bin/pgrep softflowd | wc -l`
 
 echo "$running_softflowd_count instances of softflowd are running"
 

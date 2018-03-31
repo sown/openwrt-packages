@@ -2,8 +2,8 @@
 
 . /etc/sown/functions.sh
 
-local hostapd_count=`ls /var/run/hostapd-*.conf | wc -l`
-local running_hostapd_count=`/usr/bin/pgrep hostapd | wc -l`
+hostapd_count=`ls /var/run/hostapd-*.conf | wc -l`
+running_hostapd_count=`/usr/bin/pgrep hostapd | wc -l`
 
 echo "$running_hostapd_count / $hostapd_count instances of hostapd are running"
 
