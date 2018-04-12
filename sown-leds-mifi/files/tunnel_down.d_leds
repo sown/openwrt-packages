@@ -1,8 +1,8 @@
 #! /bin/sh
 
-echo none > /sys/class/leds/gl_mifi\:green\:lan/trigger     
-echo 0 > /sys/class/leds/gl_mifi\:green\:lan/brightness
+echo none > /sys/class/leds/gl-mifi\:green\:lan/trigger     
+echo 0 > /sys/class/leds/gl-mifi\:green\:lan/brightness
 
-echo none > /sys/class/leds/gl_mifi\:green\:wlan/trigger
-echo 0 > /sys/class/leds/gl_mifi\:green\:wlan/brightness
-echo 255 > /sys/class/leds/gl_mifi\:green\:wlan/brightness
+echo none > /sys/class/leds/gl-mifi\:green\:wlan/trigger
+echo 0 > /sys/class/leds/gl-mifi\:green\:wlan/brightness
+echo 255 > /sys/class/leds/gl-mifi\:green\:wlan/brightness

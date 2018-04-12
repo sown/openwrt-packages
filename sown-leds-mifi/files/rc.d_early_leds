@@ -1,4 +1,4 @@
 #! /bin/ash
-echo 0 > /sys/class/leds/gl_mifi:green:lan/brightness
-echo none > /sys/class/leds/gl_mifi:green:lan/trigger
-echo timer > /sys/class/leds/gl_mifi:greeen:wan/trigger
+echo 0 > /sys/class/leds/gl-mifi:green:lan/brightness
+echo none > /sys/class/leds/gl-mifi:green:lan/trigger
+echo timer > /sys/class/leds/gl-mifi:greeen:wan/trigger
