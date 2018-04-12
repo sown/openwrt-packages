@@ -1,4 +1,4 @@
 #! /bin/ash
 echo netdev > /sys/class/leds/gl-mifi\:green\:wlan/trigger
-echo wlan0 > /sys/class/leds/gl-mifi\:green\:wlan/device-name
+echo wlan0 > /sys/class/leds/gl-mifi\:green\:wlan/device_name
 echo "link rx tx" > /sys/class/leds/gl-mifi\:green\:wlan/mode

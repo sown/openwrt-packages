@@ -5,4 +5,4 @@ echo 0 > /sys/class/leds/gl-mifi\:green\:lan/brightness
 
 echo none > /sys/class/leds/gl-mifi\:green\:wlan/trigger
 echo 0 > /sys/class/leds/gl-mifi\:green\:wlan/brightness
-echo 255 > /sys/class/leds/gl-mifi\:green\:wlan/brightness
+Echo 255 > /sys/class/leds/gl-mifi\:green\:wlan/brightness
