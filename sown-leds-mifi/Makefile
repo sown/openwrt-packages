@@ -21,7 +21,7 @@ define Package/sown-leds-mifi
   SECTION:=sown
   CATEGORY:=SOWN
   SUBMENU:=
-  DEPENDS:=-sown-leds-ar150
+  DEPENDS:=
   TITLE:=Southampton Open Wireless Network - LEDs - GL.iNet MiFi
   VERSION:=$(PKG_VERSION)-$(PKG_RELEASE)
 endef
