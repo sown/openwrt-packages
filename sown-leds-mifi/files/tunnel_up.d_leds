@@ -1,0 +1,4 @@
+#! /bin/ash
+echo timer > /sys/class/leds/gl_mifi\:green\:wlan/trigger
+echo none > /sys/class/leds/gl_mifi\:green\:lan/trigger
+echo 255 > /sys/class/leds/gl_mifi\:green\:lan/brightness
