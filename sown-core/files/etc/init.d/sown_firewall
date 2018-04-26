@@ -50,7 +50,7 @@ port_filter() {
 	/usr/sbin/iptables -N port_filter
 	/usr/sbin/iptables -A FORWARD -j port_filter
 
-	/usr/sbin/iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+	/usr/sbin/iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 	
 	for PORT in `uci get sown_firewall.port_filter.list`; do
 		/usr/sbin/iptables -A port_filter -p tcp --dport $PORT -j ACCEPT;
