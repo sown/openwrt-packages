@@ -17,7 +17,7 @@ if test $i -lt 30; then
 	mac=`ip link show ${interface} | grep 'link/ether' | awk '{print $2;}'`
 	nonce=`get_client_nonce`
 
-    local lock_file=/tmp/update_sown_config.lock
+    lock_file=/tmp/update_sown_config.lock
 
     if [ -e "$lock_file" ]; then
 	    echo "Update already in progress" >&2

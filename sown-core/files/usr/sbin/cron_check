@@ -2,10 +2,10 @@
 
 . /etc/sown/functions.sh
 
-local DIR=/etc/crontabs
-local index="$DIR/cron.update"
+DIR=/etc/crontabs
+index="$DIR/cron.update"
 
-local out=''
+out=''
 if [ -e "$index" ]; then
 	for f in `cat $index`
 	do

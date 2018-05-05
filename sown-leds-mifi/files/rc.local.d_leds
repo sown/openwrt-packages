@@ -1,0 +1,5 @@
+#! /bin/ash
+
+echo netdev > /sys/class/leds/gl-mifi\:greeen\:wan/trigger
+echo eth0 > /sys/class/leds/gl-mifi\:greeen\:wan/device_name
+echo "link rx tx" > /sys/class/leds/gl-mifi\:greeen\:wan/mode
