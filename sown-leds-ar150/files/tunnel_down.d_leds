@@ -1,8 +1,8 @@
 #! /bin/sh
 
-echo none > /sys/class/leds/gl_ar150\:lan/trigger     
-echo 0 > /sys/class/leds/gl_ar150\:lan/brightness
+echo none > /sys/class/leds/gl_ar150\:green\:lan/trigger     
+echo 0 > /sys/class/leds/gl_ar150\:green\:lan/brightness
 
-echo none > /sys/class/leds/gl_ar150\:wlan/trigger
-echo 0 > /sys/class/leds/gl_ar150\:wlan/brightness
-echo 255 > /sys/class/leds/gl_ar150\:wlan/brightness
+echo none > /sys/class/leds/gl_ar150\:orange\:wlan/trigger
+echo 0 > /sys/class/leds/gl_ar150\:orange\:wlan/brightness
+echo 255 > /sys/class/leds/gl_ar150\:orange\:wlan/brightness

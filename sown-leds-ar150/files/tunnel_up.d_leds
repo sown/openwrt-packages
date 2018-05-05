@@ -1,4 +1,4 @@
 #! /bin/ash
-echo timer > /sys/class/leds/gl_ar150\:wlan/trigger
-echo none > /sys/class/leds/gl_ar150\:lan/trigger
-echo 255 > /sys/class/leds/gl_ar150\:lan/brightness
+echo timer > /sys/class/leds/gl_ar150\:orange\:wlan/trigger
+echo none > /sys/class/leds/gl_ar150\:green\:lan/trigger
+echo 255 > /sys/class/leds/gl_ar150\:green\:lan/brightness
