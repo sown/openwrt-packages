@@ -5,4 +5,3 @@ echo 0 > /sys/class/leds/gl-ar150\:green\:lan/brightness
 
 echo none > /sys/class/leds/gl-ar150\:orange\:wlan/trigger
 echo 0 > /sys/class/leds/gl-ar150\:orange\:wlan/brightness
-echo 255 > /sys/class/leds/gl-ar150\:orange\:wlan/brightness
