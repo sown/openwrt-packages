@@ -228,7 +228,7 @@ update_config()
 	local last_modified=`uci_get $config_file '@meta[0]' last_modified '1970-01-01 00:00:00'`
 	local hash_str=`uci_get $config_file '@meta[0]' 'hash' ''`
 	
-	local date=`date '+%a, %d %b %Y %T' -D '%Y-%m-%d %H:%M:%S' -d "$last_modified"`
+	local date=`date '+%a, %d %b %Y %T' -d "$last_modified"`
 	local extra_curl_options="header = \"If-Modified-Since: $date\""
 	if [ "$hash_str" ]; then
 		extra_curl_options="$extra_curl_options
@@ -243,7 +243,7 @@ header = \"If-None-Match: \\\"$hash_str\\\"\""
 	
 	local SERVER_DATE=`grep '^Last-Modified:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
 	[ -z "$SERVER_DATE" ] && SERVER_DATE=`grep '^Date:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
-	SERVER_DATE=`date '+%Y-%m-%d %H:%M:%S' -D '%a, %d %b %Y %T' -d "$SERVER_DATE"`
+	SERVER_DATE=`date '+%Y-%m-%d %H:%M:%S' -d "$SERVER_DATE"`
 	local SERVER_ETAG=`grep '^ETag:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
 
 	if [ "${hash_str}" != "" ] && [ "${SERVER_ETAG}" == "${hash_str}" ]; then
@@ -316,7 +316,7 @@ download_package_uri()
 	
 	local content_type=`grep '^Content-Type:' "$FILE".headers | tr -d '\r' | cut -d ' ' -f 2`
 	SERVER_DATE=`grep '^Date:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
-	export SERVER_DATE=`date '+%Y-%m-%d %H:%M:%S' -D '%a, %d %b %Y %T' -d "$SERVER_DATE"`
+	export SERVER_DATE=`date '+%Y-%m-%d %H:%M:%S' -d "$SERVER_DATE"`
 	export SERVER_ETAG=`grep '^ETag:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
 
 	local mismatch=false
