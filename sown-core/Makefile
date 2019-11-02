@@ -21,7 +21,7 @@ define Package/sown-core
   SECTION:=sown
   CATEGORY:=SOWN
   SUBMENU:=
-  EXTRA_DEPENDS:=dnsmasq-full, curl, kmod-ipt-ipopt, kmod-ipt-conntrack, kmod-ipt-extra, kmod-ipt-nat, kmod-ip6tables, ip6tables, hostapd, openvpn, hostapd-utils, coreutils-date
+  EXTRA_DEPENDS:=dnsmasq-full, curl, kmod-ipt-ipopt, kmod-ipt-conntrack, kmod-ipt-extra, kmod-ipt-nat, kmod-ip6tables, ip6tables, hostapd, openvpn, hostapd-utils, coreutils-date, coreutils-stat
   TITLE:=Southampton Open Wireless Network - Core Package
   VERSION:=$(PKG_VERSION)-$(PKG_RELEASE)
 endef
