@@ -27,4 +27,9 @@ firmware:
 	grep sown build/imagebuilder/repositories.conf || echo "src sown file:/$(ROOT_DIR)/build/sdk/bin/packages/mips_24kc/sown/" >> build/imagebuilder/repositories.conf
 	cd build/imagebuilder && make image PROFILE=gl-ar150 PACKAGES="sown-core sown-leds-ar150 -wpad-mini -dnsmasq" FILES=files/
 
+.PHONY: all clean
+
 all: download_sdk download_imagebuilder packages firmware
+
+clean:
+	git clean -fdX
