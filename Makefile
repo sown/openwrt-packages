@@ -29,7 +29,7 @@ packages: download_sdk
 	make -C $(SDK_DIR) package/index
 
 firmware: packages download_imagebuilder
-	ln -sf $(ROOT_DIR)/files $(IMAGEBUILDER_DIR)/files
+	ln -fTs $(ROOT_DIR)/files $(IMAGEBUILDER_DIR)/files
 	grep sown $(IMAGEBUILDER_DIR)/repositories.conf || echo "src sown file:/$(IMAGEBUILDER_DIR)/bin/packages/mips_24kc/sown/" >> $(IMAGEBUILDER_DIR)/repositories.conf
 	make -C $(IMAGEBUILDER_DIR) image PROFILE=gl-ar150 PACKAGES="sown-core sown-leds-ar150 -wpad-mini -dnsmasq" FILES=files/
 
