@@ -31,7 +31,7 @@ packages: download_sdk
 firmware: packages download_imagebuilder
 	ln -fTs $(ROOT_DIR)/files $(IMAGEBUILDER_DIR)/files
 	grep sown $(IMAGEBUILDER_DIR)/repositories.conf || echo "src sown file:/$(SDK_DIR)/bin/packages/mips_24kc/sown/" >> $(IMAGEBUILDER_DIR)/repositories.conf
-	make -C $(IMAGEBUILDER_DIR) image PROFILE=gl-ar150 PACKAGES="sown-core sown-leds-ar150 -wpad-mini -dnsmasq" FILES=files/
+	make -C $(IMAGEBUILDER_DIR) image PROFILE=gl-ar150 PACKAGES="sown-core sown-leds-ar150 -wpad-mini -dnsmasq -firewall" FILES=files/
 
 .PHONY: all clean firmware packages download_sdk download_imagebuilder
 
