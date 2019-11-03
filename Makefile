@@ -10,12 +10,12 @@ IMAGEBUILDER_DIR = "$(BUILD_DIR)/imagebuilder"
 download_sdk:
 	mkdir -p $(SDK_DIR)
 	wget https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-sdk-18.06.4-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz -O build/sdk.tar.xz
-	tar -xvf build/sdk.tar.xz -C $(SDK_DIR) --strip 1
+	tar -xf build/sdk.tar.xz -C $(SDK_DIR) --strip 1
 
 download_imagebuilder:
 	mkdir -p $(IMAGEBUILDER_DIR)
 	wget https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-imagebuilder-18.06.4-ar71xx-generic.Linux-x86_64.tar.xz -O build/imagebuilder.tar.xz
-	tar -xvf build/imagebuilder.tar.xz -C $(IMAGEBUILDER_DIR) --strip 1
+	tar -xf build/imagebuilder.tar.xz -C $(IMAGEBUILDER_DIR) --strip 1
 
 packages: download_sdk 
 	grep sown $(SDK_DIR)/feeds.conf.default || echo "src-link sown $(ROOT_DIR)" >> $(SDK_DIR)/feeds.conf.default
