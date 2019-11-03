@@ -1,25 +1,29 @@
+SDK_URL = "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-sdk-18.06.4-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz" 
+IMAGEBUILDER_URL = "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-imagebuilder-18.06.4-ar71xx-generic.Linux-x86_64.tar.xz"
 
 ROOT_DIR = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-BUILD_DIR = "$(ROOT_DIR)/build"
+BUILD_DIR = $(ROOT_DIR)/build
+DOWNLOADS_DIR = $(BUILD_DIR)/downloads
 
-SDK_DIR = "$(BUILD_DIR)/sdk"
-IMAGEBUILDER_DIR = "$(BUILD_DIR)/imagebuilder"
+SDK_DIR = $(BUILD_DIR)/sdk
+IMAGEBUILDER_DIR = $(BUILD_DIR)/imagebuilder
 
-build/sdk.tar.xz:
-	mkdir -p $(BUILD_DIR)
-	wget https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-sdk-18.06.4-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz -O build/sdk.tar.xz
+$(DOWNLOADS_DIR):
+	mkdir -p $(DOWNLOADS_DIR)
 
-build/imagebuilder.tar.xz:
-	mkdir -p $(BUILD_DIR)
-	wget https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-imagebuilder-18.06.4-ar71xx-generic.Linux-x86_64.tar.xz -O build/imagebuilder.tar.xz
+$(DOWNLOADS_DIR)/sdk.tar.xz: $(DOWNLOADS_DIR)
+	wget $(SDK_URL) -O $(DOWNLOADS_DIR)/sdk.tar.xz
 
-extract_sdk: build/sdk.tar.xz
+$(DOWNLOADS_DIR)/imagebuilder.tar.xz: $(DOWNLOADS_DIR)
+	wget $(IMAGEBUILDER_URL) -O $(DOWNLOADS_DIR)/imagebuilder.tar.xz
+
+extract_sdk: $(DOWNLOADS_DIR)/sdk.tar.xz
 	mkdir -p $(SDK_DIR)
-	tar -xf $(BUILD_DIR)/sdk.tar.xz -C $(SDK_DIR) --strip 1
+	tar -xf $(DOWNLOADS_DIR)/sdk.tar.xz -C $(SDK_DIR) --strip 1
 
-extract_imagebuilder: build/imagebuilder.tar.xz
+extract_imagebuilder: $(DOWNLOADS_DIR)/imagebuilder.tar.xz
 	mkdir -p $(IMAGEBUILDER_DIR)
-	tar -xf build/imagebuilder.tar.xz -C $(IMAGEBUILDER_DIR) --strip 1
+	tar -xf $(DOWNLOADS_DIR)/imagebuilder.tar.xz -C $(IMAGEBUILDER_DIR) --strip 1
 
 packages: extract_sdk 
 	grep sown $(SDK_DIR)/feeds.conf.default || echo "src-link sown $(ROOT_DIR)" >> $(SDK_DIR)/feeds.conf.default
