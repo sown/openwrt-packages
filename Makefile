@@ -1,5 +1,5 @@
-SDK_URL = "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-sdk-18.06.4-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz" 
-IMAGEBUILDER_URL = "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-imagebuilder-18.06.4-ar71xx-generic.Linux-x86_64.tar.xz"
+sdk_URL = "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-sdk-18.06.4-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz" 
+imagebuilder_URL = "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-imagebuilder-18.06.4-ar71xx-generic.Linux-x86_64.tar.xz"
 
 ROOT_DIR = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUILD_DIR = $(ROOT_DIR)/build
@@ -7,13 +7,10 @@ DOWNLOADS_DIR = $(BUILD_DIR)/downloads
 SOURCES_DIR = $(BUILD_DIR)/sources
 
 $(DOWNLOADS_DIR):
-	mkdir -p $(DOWNLOADS_DIR)
+	mkdir -p $@ 
 
-$(DOWNLOADS_DIR)/sdk.tar.xz: $(DOWNLOADS_DIR)
-	wget $(SDK_URL) -O $(DOWNLOADS_DIR)/sdk.tar.xz
-
-$(DOWNLOADS_DIR)/imagebuilder.tar.xz: $(DOWNLOADS_DIR)
-	wget $(IMAGEBUILDER_URL) -O $(DOWNLOADS_DIR)/imagebuilder.tar.xz
+$(DOWNLOADS_DIR)/%.tar.xz: $(DOWNLOADS_DIR)
+	wget $($(basename $(basename $(notdir $@)))_URL) -O $@
 
 $(SOURCES_DIR)/%: $(DOWNLOADS_DIR)/%.tar.xz
 	mkdir -p $@
