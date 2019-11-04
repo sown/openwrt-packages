@@ -55,6 +55,8 @@ firmware: packages $(SOURCES_DIR)/imagebuilder
 
 .PHONY: all clean firmware packages 
 
+.DEFAULT_GOAL := all
+
 all: firmware
 
 clean:
