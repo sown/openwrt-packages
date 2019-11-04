@@ -25,19 +25,13 @@ OPENWRT_FOLDER_URL = $(OPENWRT_DOWNLOAD_URL)/$(OPENWRT_RELEASE)/targets/$(OPENWR
 imagebuilder_URL := $(OPENWRT_FOLDER_URL)/openwrt-imagebuilder-$(OPENWRT_RELEASE)-$(OPENWRT_TARGET)-$(OPENWRT_FLASH_LAYOUT).Linux-x86_64.tar.xz
 sdk_URL := $(OPENWRT_FOLDER_URL)/openwrt-sdk-$(OPENWRT_RELEASE)-$(OPENWRT_TARGET)-$(OPENWRT_FLASH_LAYOUT)_gcc-7.3.0_musl.Linux-x86_64.tar.xz
 
-# 
-# Makefile Follows
-#
 # Directories
-#
-#
 ROOT_DIR = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUILD_DIR = $(ROOT_DIR)/build
 DOWNLOADS_DIR = $(BUILD_DIR)/downloads
 SOURCES_DIR = $(BUILD_DIR)/sources
 
 # Downloading and Extracting
-
 $(DOWNLOADS_DIR):
 	mkdir -p $@ 
 
@@ -50,8 +44,10 @@ $(SOURCES_DIR)/%: $(DOWNLOADS_DIR)/%.tar.xz
 
 # Building Packages
 
-packages: $(SOURCES_DIR)/sdk 
-	grep sown $(SOURCES_DIR)/sdk/feeds.conf.default || echo "src-link sown $(ROOT_DIR)" >> $(SOURCES_DIR)/sdk/feeds.conf.default
+$(SOURCES_DIR)/sdk/feeds.conf.default: $(SOURCES_DIR)/sdk
+	echo "src-link sown $(ROOT_DIR)" >> $@ 
+
+packages: $(SOURCES_DIR)/sdk/feeds.conf.default 
 	$(SOURCES_DIR)/sdk/scripts/feeds update sown
 	$(SOURCES_DIR)/sdk/scripts/feeds install sown-core
 	$(SOURCES_DIR)/sdk/scripts/feeds install sown-leds-ar150
