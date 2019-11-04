@@ -8,11 +8,14 @@ OPENWRT_TARGET ?= ar71xx
 OPENWRT_FLASH_LAYOUT ?= generic
 OPENWRT_PROFILE ?=gl-ar150
 
-SOWN_PACKAGES := sown-core 
+SOWN_PACKAGES := sown-core
+PACKAGES := -wpad-mini -dnsmasq -firewall
 
 ifneq (,$(filter gl-ar150,$(OPENWRT_PROFILE)))
   SOWN_PACKAGES += sown-leds-ar150
 endif
+
+PACKAGES += $(SOWN_PACKAGES)
 
 # OpenWRT Source
 #
@@ -70,7 +73,7 @@ $(SOURCES_DIR)/imagebuilder/repositories.conf: packages
 	echo "src sown file:/$(SOURCES_DIR)/sdk/bin/packages/mips_24kc/sown/" >> $@ 
 
 firmware: $(SOURCES_DIR)/imagebuilder $(SOURCES_DIR)/imagebuilder/files $(SOURCES_DIR)/imagebuilder/repositories.conf
-	make -C $(SOURCES_DIR)/imagebuilder image PROFILE=$(OPENWRT_PROFILE) PACKAGES="$(SOWN_PACKAGES) -wpad-mini -dnsmasq -firewall" FILES=files/
+	make -C $(SOURCES_DIR)/imagebuilder image PROFILE=$(OPENWRT_PROFILE) PACKAGES="$(PACKAGES)" FILES=files/
 
 .PHONY: all clean firmware packages update_feeds install-% compile-% 
 
