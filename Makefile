@@ -5,6 +5,7 @@
 
 OPENWRT_RELEASE ?= 18.06.4
 OPENWRT_TARGET ?= ar71xx
+OPENWRT_FLASH_LAYOUT ?= generic
 OPENWRT_PROFILE ?=gl-ar150
 
 SOWN_PACKAGES := sown-core 
@@ -17,8 +18,12 @@ endif
 #
 # Note that the first part of the variable name is lower case.
 
-sdk_URL := "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-sdk-18.06.4-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz" 
-imagebuilder_URL := "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-imagebuilder-18.06.4-ar71xx-generic.Linux-x86_64.tar.xz"
+OPENWRT_DOWNLOAD_URL := https://downloads.openwrt.org/releases
+
+OPENWRT_FOLDER_URL = $(OPENWRT_DOWNLOAD_URL)/$(OPENWRT_RELEASE)/targets/$(OPENWRT_TARGET)/$(OPENWRT_FLASH_LAYOUT)
+
+imagebuilder_URL := $(OPENWRT_FOLDER_URL)/openwrt-imagebuilder-$(OPENWRT_RELEASE)-$(OPENWRT_TARGET)-$(OPENWRT_FLASH_LAYOUT).Linux-x86_64.tar.xz
+sdk_URL := $(OPENWRT_FOLDER_URL)/openwrt-sdk-$(OPENWRT_RELEASE)-$(OPENWRT_TARGET)-$(OPENWRT_FLASH_LAYOUT)_gcc-7.3.0_musl.Linux-x86_64.tar.xz
 
 # 
 # Makefile Follows
