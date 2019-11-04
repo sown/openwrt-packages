@@ -45,16 +45,22 @@ $(SOURCES_DIR)/%: $(DOWNLOADS_DIR)/%.tar.xz
 # Building Packages
 
 $(SOURCES_DIR)/sdk/feeds.conf.default: $(SOURCES_DIR)/sdk
-	echo "src-link sown $(ROOT_DIR)" >> $@ 
+	echo "src-link sown $(ROOT_DIR)" >> $@
 
-packages: $(SOURCES_DIR)/sdk/feeds.conf.default 
+update_feeds: $(SOURCES_DIR)/sdk/feeds.conf.default
 	$(SOURCES_DIR)/sdk/scripts/feeds update sown
-	$(SOURCES_DIR)/sdk/scripts/feeds install sown-core
-	$(SOURCES_DIR)/sdk/scripts/feeds install sown-leds-ar150
+
+install-%:
+	$(SOURCES_DIR)/sdk/scripts/feeds install $* 
+
+config_packages: update_feeds $(addprefix install-, $(SOWN_PACKAGES)) 
 	echo "CONFIG_SIGNED_PACKAGES=n" > $(SOURCES_DIR)/sdk/.config
 	make -C $(SOURCES_DIR)/sdk defconfig
-	make -C $(SOURCES_DIR)/sdk package/sown-core/compile
-	make -C $(SOURCES_DIR)/sdk package/sown-leds-ar150/compile
+
+compile-%: update_feeds install-%
+	make -C $(SOURCES_DIR)/sdk package/$*/compile
+
+packages: config_packages $(addprefix compile-, $(SOWN_PACKAGES))
 	make -C $(SOURCES_DIR)/sdk package/index
 
 firmware: packages $(SOURCES_DIR)/imagebuilder 
