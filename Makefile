@@ -3,7 +3,15 @@
 # Build Options
 #
 
-SOWN_PACKAGES := sown-core sown-leds-ar150
+OPENWRT_RELEASE ?= 18.06.4
+OPENWRT_TARGET ?= ar71xx
+OPENWRT_PROFILE ?=gl-ar150
+
+SOWN_PACKAGES := sown-core 
+
+ifneq (,$(filter gl-ar150,$(OPENWRT_PROFILE)))
+  SOWN_PACKAGES += sown-leds-ar150
+endif
 
 # OpenWRT Source
 #
