@@ -1,10 +1,29 @@
-sdk_URL = "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-sdk-18.06.4-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz" 
-imagebuilder_URL = "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-imagebuilder-18.06.4-ar71xx-generic.Linux-x86_64.tar.xz"
+# SOWN-at-Home Build File
+#
+# Build Options
+#
 
+SOWN_PACKAGES := sown-core sown-leds-ar150
+
+# OpenWRT Source
+#
+# Note that the first part of the variable name is lower case.
+
+sdk_URL := "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-sdk-18.06.4-ar71xx-generic_gcc-7.3.0_musl.Linux-x86_64.tar.xz" 
+imagebuilder_URL := "https://downloads.openwrt.org/releases/18.06.4/targets/ar71xx/generic/openwrt-imagebuilder-18.06.4-ar71xx-generic.Linux-x86_64.tar.xz"
+
+# 
+# Makefile Follows
+#
+# Directories
+#
+#
 ROOT_DIR = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUILD_DIR = $(ROOT_DIR)/build
 DOWNLOADS_DIR = $(BUILD_DIR)/downloads
 SOURCES_DIR = $(BUILD_DIR)/sources
+
+# Downloading and Extracting
 
 $(DOWNLOADS_DIR):
 	mkdir -p $@ 
@@ -15,6 +34,8 @@ $(DOWNLOADS_DIR)/%.tar.xz: $(DOWNLOADS_DIR)
 $(SOURCES_DIR)/%: $(DOWNLOADS_DIR)/%.tar.xz
 	mkdir -p $@
 	tar -xf $< -C $@ --strip 1 
+
+# Building Packages
 
 packages: $(SOURCES_DIR)/sdk 
 	grep sown $(SOURCES_DIR)/sdk/feeds.conf.default || echo "src-link sown $(ROOT_DIR)" >> $(SOURCES_DIR)/sdk/feeds.conf.default
