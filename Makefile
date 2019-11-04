@@ -63,12 +63,16 @@ compile-%: update_feeds install-%
 packages: config_packages $(addprefix compile-, $(SOWN_PACKAGES))
 	make -C $(SOURCES_DIR)/sdk package/index
 
-firmware: packages $(SOURCES_DIR)/imagebuilder 
-	ln -fTs $(ROOT_DIR)/files $(SOURCES_DIR)/imagebuilder/files
-	grep sown $(SOURCES_DIR)/imagebuilder/repositories.conf || echo "src sown file:/$(SOURCES_DIR)/sdk/bin/packages/mips_24kc/sown/" >> $(SOURCES_DIR)/imagebuilder/repositories.conf
-	make -C $(SOURCES_DIR)/imagebuilder image PROFILE=gl-ar150 PACKAGES="sown-core sown-leds-ar150 -wpad-mini -dnsmasq -firewall" FILES=files/
+$(SOURCES_DIR)/imagebuilder/files: $(ROOT_DIR)/files $(SOURCES_DIR)/imagebuilder
+	ln -fTs $< $@
 
-.PHONY: all clean firmware packages 
+$(SOURCES_DIR)/imagebuilder/repositories.conf: packages
+	echo "src sown file:/$(SOURCES_DIR)/sdk/bin/packages/mips_24kc/sown/" >> $@ 
+
+firmware: $(SOURCES_DIR)/imagebuilder $(SOURCES_DIR)/imagebuilder/files $(SOURCES_DIR)/imagebuilder/repositories.conf
+	make -C $(SOURCES_DIR)/imagebuilder image PROFILE=$(OPENWRT_PROFILE) PACKAGES="$(SOWN_PACKAGES) -wpad-mini -dnsmasq -firewall" FILES=files/
+
+.PHONY: all clean firmware packages update_feeds install-% compile-% 
 
 .DEFAULT_GOAL := all
 
