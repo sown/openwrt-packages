@@ -57,10 +57,6 @@ define Package/sown-core/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/configure_scripts/available/* $(1)/etc/sown/configure_scripts/available/
 	$(INSTALL_DIR) $(1)/etc/sown/configure_scripts/enabled/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/configure_scripts/enabled/* $(1)/etc/sown/configure_scripts/enabled/
-	$(INSTALL_DIR) $(1)/etc/sown/crontabs/at-boot/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/crontabs/at_boot/* $(1)/etc/sown/crontabs/at-boot/
-	$(INSTALL_DIR) $(1)/etc/sown/crontabs/available/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/crontabs/available/* $(1)/etc/sown/crontabs/available/
 	$(INSTALL_DIR) $(1)/etc/sown/events/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/tunnel_up $(1)/etc/sown/events/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/etc/sown/events/tunnel_down $(1)/etc/sown/events/
