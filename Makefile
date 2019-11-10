@@ -48,7 +48,7 @@ $(SOURCES_DIR)/%: $(DOWNLOADS_DIR)/%.tar.xz
 # Building Packages
 
 $(SOURCES_DIR)/sdk/feeds.conf.default: $(SOURCES_DIR)/sdk
-	echo "src-link sown $(ROOT_DIR)" >> $@
+	echo "src-link sown $(ROOT_DIR)/packages" >> $@
 
 update_feeds: $(SOURCES_DIR)/sdk/feeds.conf.default
 	$(SOURCES_DIR)/sdk/scripts/feeds update sown
