@@ -8,9 +8,6 @@ rm /tmp/hosts.tmp
 
 . /etc/sown/constants.sh
 
-# Fixing crontabs symlinks
-ln -s /tmp/sown/crontabs/current /etc/sown/crontabs/current
-
 echo "Enabling sown boot and firewall"
 /etc/init.d/sown_boot enable
 /etc/init.d/default_time enable

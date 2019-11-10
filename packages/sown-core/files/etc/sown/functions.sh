@@ -91,45 +91,6 @@ uci_foreach()
 	done
 }
 
-# Regenerate and install the crontab from the currently enabled crontabs
-# Currently enabled crontabs can be found in  /etc/sown/crontabs/current/
-# Also: if cron is not running, starts cron.
-#
-# Usage:
-# 	update_crontabs [flag]
-#
-# [flag]	Any value here will prevent cron from being started
-#update_crontabs()
-#{
-#	local tmp_file=`mktemp -p /tmp crontab.wc.XXXXXX`
-#	
-#	for file in $(ls /etc/sown/crontabs/current/* 2>/dev/null); do
-#		cat "$file" >> "$tmp_file"
-#		# Make sure we have newlines
-#		echo >> "$tmp_file"
-#	done
-#	
-#	# Remove blank lines
-#	local new_tmp_file=`mktemp -p /tmp crontab.wc.XXXXXX`
-#	grep -v '^$' "$tmp_file" >> "$new_tmp_file"
-#	rm "$tmp_file"
-#	tmp_file="$new_tmp_file"
-#	
-#	
-#	local old_md5=`crontab -l | md5sum`
-#	local new_md5=`cat "$tmp_file" | md5sum`
-#	
-#	[ "$old_md5" != "$new_md5" ] && crontab "$tmp_file"
-#	rm -f "$tmp_file"
-#	
-#	# Make sure cron starts if needed
-#	if [ -z "$1" ]; then
-#		if [ ! -e /var/run/crond.pid ] || ! proc_name_is `cat /var/run/crond.pid` "/usr/sbin/crond" ; then
-#			[ ! -z "$(ls /etc/crontabs/ )" ] && [ $(cat /etc/crontabs/* | grep -v '^#' | wc -l ) -gt 0 ] && /etc/init.d/cron restart
-#		fi
-#	fi
-#}
-
 # Usage:
 # enable_crontab <crontab_name>
 #
@@ -228,7 +189,7 @@ update_config()
 	local last_modified=`uci_get $config_file '@meta[0]' last_modified '1970-01-01 00:00:00'`
 	local hash_str=`uci_get $config_file '@meta[0]' 'hash' ''`
 	
-	local date=`date '+%a, %d %b %Y %T' -D '%Y-%m-%d %H:%M:%S' -d "$last_modified"`
+	local date=`date '+%a, %d %b %Y %T' -d "$last_modified"`
 	local extra_curl_options="header = \"If-Modified-Since: $date\""
 	if [ "$hash_str" ]; then
 		extra_curl_options="$extra_curl_options
@@ -243,7 +204,7 @@ header = \"If-None-Match: \\\"$hash_str\\\"\""
 	
 	local SERVER_DATE=`grep '^Last-Modified:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
 	[ -z "$SERVER_DATE" ] && SERVER_DATE=`grep '^Date:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
-	SERVER_DATE=`date '+%Y-%m-%d %H:%M:%S' -D '%a, %d %b %Y %T' -d "$SERVER_DATE"`
+	SERVER_DATE=`date '+%Y-%m-%d %H:%M:%S' -d "$SERVER_DATE"`
 	local SERVER_ETAG=`grep '^ETag:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
 
 	if [ "${hash_str}" != "" ] && [ "${SERVER_ETAG}" == "${hash_str}" ]; then
@@ -316,7 +277,7 @@ download_package_uri()
 	
 	local content_type=`grep '^Content-Type:' "$FILE".headers | tr -d '\r' | cut -d ' ' -f 2`
 	SERVER_DATE=`grep '^Date:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
-	export SERVER_DATE=`date '+%Y-%m-%d %H:%M:%S' -D '%a, %d %b %Y %T' -d "$SERVER_DATE"`
+	export SERVER_DATE=`date '+%Y-%m-%d %H:%M:%S' -d "$SERVER_DATE"`
 	export SERVER_ETAG=`grep '^ETag:' "$FILE.headers" | tr -d '\r' | cut -d ' ' -f 2-`
 
 	local mismatch=false

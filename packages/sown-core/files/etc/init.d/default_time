@@ -19,7 +19,7 @@ start() {
 		local crt_date=`grep "Not Before:" "$crt" | head -n 1 | sed "s/^[ \t]\+Not Before: \(.\+\)$/\1/"`
 		
 		if [ -n "$crt_date" ]; then
-			crt_ts=`date -d "$crt_date" -D "%b %d %H:%M:%S %Y %Z" +%s`
+			crt_ts=`date -d "$crt_date" +%s`
 		else
 			# If there was no date in the file, use the file modified time
 			crt_ts=`get_file_mtime "$crt"`
@@ -35,7 +35,7 @@ start() {
 	local cur_ts=`date +%s`
 	if [ $new_ts -gt $cur_ts ]; then
 		OLD_DATE=`date`
-		NEW_DATE=`date -D "%s" -s "$new_ts"`
+		NEW_DATE=`date -s "@$new_ts"`
 
 		echo "Time was $OLD_DATE."
 		echo "Time has been set to $NEW_DATE."
