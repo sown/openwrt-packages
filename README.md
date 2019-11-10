@@ -1,5 +1,7 @@
 # SOWN-at-Home Firmware Builder
 
+[![CircleCI](https://circleci.com/gh/sown/openwrt-packages/tree/master.svg?style=svg)](https://circleci.com/gh/sown/openwrt-packages/tree/master)
+
 This repository contains the custom SOWN packages for SOWN-at-Home nodes, as well as a build system to compile firmware images.
 
 As the firmware is based on [OpenWRT](https://openwrt.org/), it makes use of their [ImageBuilder system](https://openwrt.org/docs/guide-user/additional-software/imagebuilder).
