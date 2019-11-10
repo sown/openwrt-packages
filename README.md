@@ -21,4 +21,6 @@ The docker image is defined in the `Dockerfile` in this repo.
 
 You can build the docker image by running `docker build -t sown-builder .`
 
-You can then make use of the image by running `docker run -it -v /path/to/repo:/path/in/container sown-builder:latest`.
+It is also built in the cloud by [Docker Hub](https://hub.docker.com). It can be accessed as `sown/builder`.
+
+You can then make use of the image by running `docker run -it -v /path/to/repo:/path/in/container sown/builder:latest`.
