@@ -12,6 +12,3 @@ uci commit wireless
 for file in `ls -1 /etc/sown/events/tunnel_up_delayed.d`; do
 	/etc/sown/events/tunnel_up_delayed.d/$file
 done
-
-# HUP dnsmasq, should be enough to make it notice interface changes
-/etc/init.d/dnsmasq reload
