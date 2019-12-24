@@ -1,6 +1,0 @@
-#!/bin/ash
-. /etc/sown/functions.sh
-
-if update_config sown_openwrt_monitoring 0.1.225 softflowd ; then
-	/etc/init.d/softflowd restart
-fi

@@ -19,7 +19,3 @@ done
 # restart dnsmasq ... it doesn't like interfaces coming and going
 /etc/init.d/dnsmasq stop                                         
 /etc/init.d/dnsmasq start   
-
-# restart softflowd ... it needs to be connected to the mother ship
-/etc/init.d/softflowd stop
-/etc/init.d/softflowd start
