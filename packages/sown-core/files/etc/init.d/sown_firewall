@@ -8,7 +8,7 @@ START=50
 
 flush_all() {
 	# Flush the current tables
-	for t in filter nat mangle raw; do
+	for t in filter nat mangle; do
 		/usr/sbin/iptables -t $t -F
 		/usr/sbin/iptables -t $t -X
 			
@@ -88,7 +88,7 @@ start() {
 
         include /etc/sown/firewall/chains  
 	
-	/etc/init.d/dnsmasq restart
+	/etc/init.d/dnsmasq reload 
 }
 
 stop() {

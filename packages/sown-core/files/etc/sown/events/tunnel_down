@@ -3,7 +3,9 @@
 echo "TODO: Kill radvd ... it can't route anymore"
 
 echo "Stopping wireless"
-/sbin/wifi down
+uci set wireless.@wifi-iface[0].disabled=1
+uci commit wireless
+/etc/init.d/network reload
 
 for file in `ls -1 /etc/sown/events/tunnel_down.d`; do
 	/etc/sown/events/tunnel_down.d/$file

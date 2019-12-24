@@ -4,18 +4,14 @@ echo "TODO: Ensure radvd is running, start it if not"
 
 . /etc/sown/functions.sh
 
-# Starting syslog_tcp
-(ps w | grep syslog_tcp | grep -v grep &> /dev/null) || /usr/bin/syslog_tcp &
-
 echo "Restarting Wireless:"
-/sbin/wifi down
-sleep 1;
-/sbin/wifi
+uci set wireless.@wifi-iface[0].disabled=0
+uci commit wireless
+/etc/init.d/network reload
 
 for file in `ls -1 /etc/sown/events/tunnel_up_delayed.d`; do
 	/etc/sown/events/tunnel_up_delayed.d/$file
 done
-          
-# restart dnsmasq ... it doesn't like interfaces coming and going
-/etc/init.d/dnsmasq stop                                         
-/etc/init.d/dnsmasq start   
+
+# HUP dnsmasq, should be enough to make it notice interface changes
+/etc/init.d/dnsmasq reload
