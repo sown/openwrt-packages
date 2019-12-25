@@ -20,8 +20,6 @@ if [ "`uci get locations.sown_home.auth_type`" = "tunnel" ]; then
 
 	# Check if we should change the tunnel config?
 	if [ "$TUNNEL_OK" = "no" ]; then
-        /etc/sown/events/tunnel_down # Tunnel isn't valid, run down events
-
 		# log that we ran while the tunnel wasn't working
 		/bin/date >>  $TUNNEL_STARTUP_LOG
 		
@@ -60,9 +58,6 @@ if [ "`uci get locations.sown_home.auth_type`" = "tunnel" ]; then
 		echo "maintain_sown_tunnel: Server endpoint not reachable" | logger
 		echo "maintain_sown_tunnel: Stopping tunnel" | logger
 		/etc/init.d/openvpn stop
-		
-		# openvpn isn't too reliable at running this:
-		`uci get openvpn.sown_tunnel.down`
 	else
 		# Make sure the tunnel is up
 		pgrep openvpn > /dev/null
