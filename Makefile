@@ -56,8 +56,8 @@ update_feeds: $(SOURCES_DIR)/sdk/feeds.conf.default
 install-%:
 	$(SOURCES_DIR)/sdk/scripts/feeds install $* 
 
-config_packages: update_feeds $(addprefix install-, $(SOWN_PACKAGES)) 
-	echo "CONFIG_SIGNED_PACKAGES=n" > $(SOURCES_DIR)/sdk/.config
+config_packages: update_feeds $(addprefix install-, $(SOWN_PACKAGES)) $(SOURCES_DIR)/sdk/key-build $(SOURCES_DIR)/sdk/key-build.pub
+	echo "CONFIG_SIGNED_PACKAGES=y" > $(SOURCES_DIR)/sdk/.config
 	make -C $(SOURCES_DIR)/sdk defconfig
 
 compile-%: update_feeds install-%
@@ -67,6 +67,12 @@ packages: config_packages $(addprefix compile-, $(SOWN_PACKAGES))
 	make -C $(SOURCES_DIR)/sdk package/index
 
 $(SOURCES_DIR)/imagebuilder/files: $(ROOT_DIR)/files $(SOURCES_DIR)/imagebuilder
+	ln -fTs $< $@
+
+$(SOURCES_DIR)/sdk/key-build: ~/key-build
+	ln -fTs $< $@
+
+$(SOURCES_DIR)/sdk/key-build.pub: ~/key-build.pub
 	ln -fTs $< $@
 
 $(SOURCES_DIR)/imagebuilder/repositories.conf: packages
