@@ -1,0 +1,22 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install APT dependencies
+        run: sudo apt install build-essential bzip2 gawk git zlib1g-dev libncurses5-dev flex python2 unzip wget xz-utils
+      - name: Build Firmware
+        run: make
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: bin
+          path: build/sources/imagebuilder/bin
