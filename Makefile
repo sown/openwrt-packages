@@ -75,14 +75,14 @@ $(SOURCES_DIR)/imagebuilder/repositories.conf: packages
 imagebuilder-packages:
 	cp $(SOURCES_DIR)/sdk/bin/packages/mips_24kc/sown/*.ipk $(SOURCES_DIR)/imagebuilder/packages/
 
-firmware: $(SOURCES_DIR)/imagebuilder $(SOURCES_DIR)/imagebuilder/files imagebuilder-packages
+firmware: $(SOURCES_DIR)/imagebuilder $(SOURCES_DIR)/imagebuilder/files imagebuilder-packages packages
 	make -C $(SOURCES_DIR)/imagebuilder image PROFILE=$(OPENWRT_PROFILE) PACKAGES="$(PACKAGES)" FILES=files/
 
 .PHONY: all clean firmware packages update_feeds install-% compile-% 
 
 .DEFAULT_GOAL := all
 
-all: firmware
+all: packages firmware
 
 clean:
 	git clean -fdX
